@@ -1,0 +1,51 @@
+directive @countries(
+    codes: [String] = []
+) on FIELD_DEFINITION
+
+"Air pollutant emissions reported for countries, where data is available, measured in tonnes per year"
+type AirPollutionIndicators {
+    """
+    Carbon monoxide
+    Countries: [GB]
+    """
+    carbon_monoxide: Long @countries(codes: ["GB"])
+    """
+    Non-methane Volatile Organic Compounds (VOCs)
+    Countries: [GB]
+    """
+    non_methane_volatile_organic_compounds: Long @countries(codes: ["GB"])
+
+}
+
+"Consolidated namespace for all indicators of CO2 Emission by country"
+type Co2EmissionIndicators {
+    """
+    CO2 Emission per capita
+    Key(s): city
+    Countries: [US, GB, SE]
+    """
+    co2_emission_per_capita: Long @countries(codes: ["US", "GB", "SE"])
+    """
+    CO2 Transport Emission per capita
+    Key(s): city
+    Countries: [US, GB, SE]
+    """
+    co2_transport_emission: Long @countries(codes: ["US", "GB", "SE"])
+    """
+    CO2 Waste Emission per capita
+    Key(s): city
+    Countries: [US, GB, SE]
+    """
+    co2_waste_emission: Long @countries(codes: ["US", "GB", "SE"])
+}
+
+type Query {
+    "Air pollutant emissions reported for countries, where data is available, measured in tonnes per year"
+    air_pollution(country: String, city: String): AirPollutionIndicators
+    "Consolidated namespace for all indicators of CO2 Emission by country"
+    co2_emission(country: String, city: String): Co2EmissionIndicators
+}
+
+schema {
+    query: Query
+}

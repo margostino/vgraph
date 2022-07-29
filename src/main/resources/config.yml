@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+schema:
+  file: schema.graphql
+
+banner:
+  path: banner.txt
+  enabled: true
+
+namespaces:
+  air_pollution:
+    - type: http
+      name: wikipedia
+      metadata_url: http://localhost:10000/metadata
+      url: http://localhost:10000/indicators
+    - type: http
+      name: owid
+      metadata_url: http://localhost:10000/metadata
+      url: http://localhost:10000/indicators
+  co2_emission:
+    - type: http
+      name: ipcc
+      metadata_url: http://localhost:10000/metadata
+      url: http://localhost:10000/indicators
+    - type: http
+      name: nasa
+      metadata_url: http://localhost:10000/metadata
+      url: http://localhost:10000/indicators
+
+
