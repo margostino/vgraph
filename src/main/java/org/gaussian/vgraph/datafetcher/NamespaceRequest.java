@@ -14,8 +14,8 @@ public record NamespaceRequest(Map<String, Object> parameters,
                                org.gaussian.vgraph.datafetcher.NamespaceRequest.NamespaceRequestMetadata metadata) {
     @Builder
     @JsonCreator
-    public NamespaceRequest(@JsonProperty("requestParameters") Map<String, Object> parameters,
-                            @JsonProperty("requestedindicators") List<RequestedIndicatorDTO> indicators,
+    public NamespaceRequest(@JsonProperty("parameters") Map<String, Object> parameters,
+                            @JsonProperty("indicators") List<RequestedIndicatorDTO> indicators,
                             @JsonProperty("metadata") NamespaceRequestMetadata metadata) {
         this.parameters = parameters;
         this.indicators = indicators;
