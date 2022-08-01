@@ -13,7 +13,7 @@ namespaces:
     - type: http
       name: wikipedia
       metadata_url: http://localhost:10000/metadata
-      url: http://localhost:10000/indicators
+      url: http://localhost:10000/indicator-bad-request
     - type: http
       name: owid
       metadata_url: http://localhost:10000/metadata
@@ -22,10 +22,20 @@ namespaces:
     - type: http
       name: ipcc
       metadata_url: http://localhost:10000/metadata
-      url: http://localhost:10000/indicators
+      url: http://localhost:10000/indicator-with-error
     - type: http
       name: nasa
       metadata_url: http://localhost:10000/metadata
       url: http://localhost:10000/indicators
+  energy_consumption:
+    - type: http
+      name: wikipedia
+      metadata_url: http://localhost:10000/metadata
+      url: http://localhost:10000/indicators
+    - type: http
+      name: simil
+      metadata_url: http://localhost:10000/metadata
+      url: http://localhost:10000/indicators
+
 
 

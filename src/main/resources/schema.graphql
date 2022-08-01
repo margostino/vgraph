@@ -2,6 +2,30 @@ directive @countries(
     codes: [String] = []
 ) on FIELD_DEFINITION
 
+"Global share of primary energy consumption by source"
+type EnergyConsumptionIndicators {
+    """
+    Solar %
+    """
+    solar: Long
+    """
+    Wind %
+    """
+    wind: Long
+    """
+    Nuclear %
+    """
+    nuclear: Long
+    """
+    Hydropower %
+    """
+    hydropower: Long
+    """
+    Natural gas %
+    """
+    natural_gas: Long
+}
+
 "Air pollutant emissions reported for countries, where data is available, measured in tonnes per year"
 type AirPollutionIndicators {
     """
@@ -14,7 +38,11 @@ type AirPollutionIndicators {
     Countries: [GB]
     """
     non_methane_volatile_organic_compounds: Long @countries(codes: ["GB"])
-
+    """
+    Death Rate
+    Countries: [GB]
+    """
+    death_rate: Long @countries(codes: ["GB"])
 }
 
 "Consolidated namespace for all indicators of CO2 Emission by country"
@@ -44,6 +72,8 @@ type Query {
     air_pollution(country: String, city: String): AirPollutionIndicators
     "Consolidated namespace for all indicators of CO2 Emission by country"
     co2_emission(country: String, city: String): Co2EmissionIndicators
+    "Global share of primary energy consumption by source"
+    energy_consumption(country: String): EnergyConsumptionIndicators
 }
 
 schema {

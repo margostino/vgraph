@@ -6,6 +6,7 @@ import io.micrometer.core.instrument.Tags;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.DecodeException;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.micrometer.backends.BackendRegistries;
@@ -75,9 +76,11 @@ public class HttpDataFetcher implements DataFetcher {
     public Future<DataFetcherResult> call(NamespaceRequest namespaceRequest) {
         log.info("calling data fetcher {} for namespace {}", fetcherName, namespace);
 
-        return createHttpRequest(namespaceRequest).map(this::post)
-                                                  .map(async -> async.map(this::processResponse))
-                                                  .orElseGet(() -> fail("Missing or Invalid HTTP Request"));
+        Optional<IndicatorHttpRequest> request = createHttpRequest(namespaceRequest);
+
+        return request.map(this::post)
+                      .map(async -> async.map(this::processResponse))
+                      .orElseGet(() -> fail("Missing or Invalid HTTP Request"));
     }
 
     private Future fail(String message) {
@@ -148,9 +151,14 @@ public class HttpDataFetcher implements DataFetcher {
             final IndicatorHttpResponse successfulResponse = JsonCodec.decode(payload, IndicatorHttpResponse.class);
             return getFetcherResult(successfulResponse);
         } else {
+            DataFetcherError fetcherError;
             final Map<String, DataFetcherError> errors = new HashMap<>();
-            final IndicatorHttpErrorResponse errorResponse = JsonCodec.decode(payload, IndicatorHttpErrorResponse.class);
-            final DataFetcherError fetcherError = new DataFetcherError(namespace, fetcherName, null, errorResponse.getErrorMessage());
+            try {
+                final IndicatorHttpErrorResponse errorResponse = JsonCodec.decode(payload, IndicatorHttpErrorResponse.class);
+                fetcherError = new DataFetcherError(namespace, fetcherName, null, errorResponse.getErrorMessage());
+            } catch (DecodeException e) {
+                fetcherError = new DataFetcherError(namespace, fetcherName, null, e.getMessage());
+            }
             errors.put(namespace, fetcherError);
             final DataFetcherResult fetcherResult = new DataFetcherResult(emptyMap(), errors);
             return fetcherResult;

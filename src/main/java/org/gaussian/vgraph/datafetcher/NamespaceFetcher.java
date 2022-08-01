@@ -73,7 +73,8 @@ public class NamespaceFetcher implements graphql.schema.DataFetcher<CompletionSt
                                                 .map(error -> {
                                                     final String message = error.getString("message");
                                                     final List<Object> path = error.getJsonArray("path").getList();
-                                                    final IndicatorFetcherGraphQLError indicatorFetcherGraphQLError = new IndicatorFetcherGraphQLError(message, path);
+                                                    final Map<String, Object> extensions = error.getJsonObject("extensions").getMap();
+                                                    final IndicatorFetcherGraphQLError indicatorFetcherGraphQLError = new IndicatorFetcherGraphQLError(message, path, extensions);
                                                     return indicatorFetcherGraphQLError;
                                                 }).collect(toList());
 
