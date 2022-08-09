@@ -4,9 +4,9 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.DecodeException;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.micrometer.backends.BackendRegistries;
@@ -46,12 +46,13 @@ import static org.gaussian.vgraph.common.AppConstants.USERNAME_HEADER;
 public class HttpDataFetcher implements DataFetcher {
 
     private static final Logger log = LoggerFactory.getLogger(HttpDataFetcher.class);
-    private static final String API_VERSION = "2.0.0";
+    private static final String API_VERSION = "1.0.0";
 
     private final String path;
     private final String namespace;
     private final String fetcherName;
     private final WebClient webClient;
+    private final CircuitBreaker breaker;
     private final Counter failureCounter;
     private final List<ArgumentConfig> fields;
     private final Map<String, String> headers;
@@ -60,12 +61,14 @@ public class HttpDataFetcher implements DataFetcher {
                            String namespace,
                            String fetcherName,
                            WebClient webClient,
+                           CircuitBreaker breaker,
                            Map<String, String> headers,
                            List<ArgumentConfig> fields) {
 
         this.path = path;
         this.fields = fields;
         this.headers = headers;
+        this.breaker = breaker;
         this.namespace = namespace;
         this.webClient = webClient;
         this.fetcherName = fetcherName;
@@ -139,9 +142,10 @@ public class HttpDataFetcher implements DataFetcher {
     }
 
     private Future<HttpResponse<Buffer>> post(IndicatorHttpRequest request) {
-        return webClient
-                .post(path)
-                .sendJson(request.getPayload());
+        return breaker.execute(promise -> webClient.post(path)
+                                                   .sendJson(request.getPayload())
+                                                   .onFailure(error -> promise.fail(format("fetcher %s failed with error %s", fetcherName, error.getMessage())))
+                                                   .onSuccess(promise::complete));
     }
 
     private DataFetcherResult processResponse(HttpResponse response) {
@@ -151,16 +155,11 @@ public class HttpDataFetcher implements DataFetcher {
             final IndicatorHttpResponse successfulResponse = JsonCodec.decode(payload, IndicatorHttpResponse.class);
             return getFetcherResult(successfulResponse);
         } else {
-            DataFetcherError fetcherError;
             final Map<String, DataFetcherError> errors = new HashMap<>();
-            try {
-                final IndicatorHttpErrorResponse errorResponse = JsonCodec.decode(payload, IndicatorHttpErrorResponse.class);
-                fetcherError = new DataFetcherError(namespace, fetcherName, null, errorResponse.getErrorMessage());
-            } catch (DecodeException e) {
-                fetcherError = new DataFetcherError(namespace, fetcherName, null, e.getMessage());
-            }
+            final IndicatorHttpErrorResponse errorResponse = JsonCodec.decode(payload, IndicatorHttpErrorResponse.class);
+            final DataFetcherError fetcherError = new DataFetcherError(namespace, fetcherName, null, errorResponse.getErrorMessage());
             errors.put(namespace, fetcherError);
-            final DataFetcherResult fetcherResult = new DataFetcherResult(emptyMap(), errors);
+            DataFetcherResult fetcherResult = new DataFetcherResult(emptyMap(), errors);
             return fetcherResult;
         }
     }

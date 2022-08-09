@@ -12,21 +12,16 @@ import java.util.Map;
 
 public class IndicatorFetcherGraphQLError implements GraphQLError {
 
-    private static final String FETCHER_NAME_EXTENSION_KEY = "fetcher_name";
-
     private final String message;
     private final List<Object> path;
-    private final Map<String, Object> extensions;
 
-    public IndicatorFetcherGraphQLError(String message, List<Object> path, Map<String, Object> extensions) {
+    public IndicatorFetcherGraphQLError(String message, List<Object> path) {
         this.path = path;
         this.message = message;
-        this.extensions = extensions;
     }
 
     public IndicatorFetcherGraphQLError(DataFetcherError indicatorFetcherError) {
         this.path = new ArrayList<>();
-        this.extensions = getExtensionFor(FETCHER_NAME_EXTENSION_KEY, indicatorFetcherError.fetcherName());
 
         if (indicatorFetcherError.namespace() != null) {
             this.path.add(indicatorFetcherError.namespace());
@@ -60,12 +55,7 @@ public class IndicatorFetcherGraphQLError implements GraphQLError {
 
     @Override
     public Map<String, Object> getExtensions() {
-        return extensions;
+        return ImmutableMap.of("detailedErrorType", this.getClass().getSimpleName());
     }
 
-    private Map<String, Object> getExtensionFor(String key, String value) {
-        return ImmutableMap.<String, Object>builder()
-                           .put(key, value)
-                           .build();
-    }
 }

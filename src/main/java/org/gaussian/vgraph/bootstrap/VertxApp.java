@@ -27,7 +27,8 @@ import org.gaussian.vgraph.metrics.DataDogMetricCollector;
 import org.gaussian.vgraph.metrics.MetricCollector;
 import org.gaussian.vgraph.metrics.NoOpMetricCollector;
 import org.gaussian.vgraph.verticle.GraphQLServerVerticle;
-import org.gaussian.vgraph.verticle.HttpServerVerticle;
+import org.gaussian.vgraph.verticle.HttpClientVerticle;
+import org.gaussian.vgraph.verticle.TrackingVerticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,13 +69,18 @@ public class VertxApp {
         vertx = vertx(metricCollector);
         verticles = new ArrayList<>();
         modules = override(new VertxAppModule(applicationClass, vertx, metricCollector)).with(applicationModules);
-        //rangeClosed(1, httpServersCount()).forEach(i -> verticles.add(instanceOf("http-" + i, GraphQLServerVerticle.class)));
-        rangeClosed(1, 4).forEach(i -> verticles.add(instanceOf("graphql-" + i, GraphQLServerVerticle.class)));
-        rangeClosed(1, 4).forEach(i -> verticles.add(instanceOf("http-" + i, HttpServerVerticle.class)));
-//    verticles.add(instanceOf("reporting", CircuitBreakerMetricsPublisher.class));
-//    verticles.add(instanceOf("consumers", EventConsumerVerticle.class));
+        httpServersCount();
+        rangeClosed(1, getCoreByVerticle(2, "GraphQL Server")).forEach(i -> verticles.add(instanceOf("graphql-" + i, GraphQLServerVerticle.class)));
+        rangeClosed(1, getCoreByVerticle(1, "Tracking")).forEach(i -> verticles.add(instanceOf("tracking-" + i, TrackingVerticle.class)));
+        rangeClosed(1, getCoreByVerticle(3, "HTTP Client")).forEach(i -> verticles.add(instanceOf("http-" + i, HttpClientVerticle.class)));
         interactiveQuitOnDev();
         registerMetrics();
+    }
+
+    private static int getCoreByVerticle(int verticles, String name) {
+        log.info("Deploying {} instances for {} verticle.", verticles, name);
+        // TODO: smart core distribution by verticles
+        return verticles;
     }
 
     private static int httpServersCount() {

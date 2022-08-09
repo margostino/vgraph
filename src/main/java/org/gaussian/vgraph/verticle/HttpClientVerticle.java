@@ -7,12 +7,12 @@ import io.vertx.core.AbstractVerticle;
 /**
  * Defines REST API endpoints and starts a HTTP server on port {@value}.
  */
-public class HttpServerVerticle extends AbstractVerticle {
+public class HttpClientVerticle extends AbstractVerticle {
 
   private final EventBusConsumersConfigurator configurator;
 
   @Inject
-  public HttpServerVerticle(EventBusConsumersConfigurator configurator) {
+  public HttpClientVerticle(EventBusConsumersConfigurator configurator) {
     super();
     this.configurator = configurator;
   }

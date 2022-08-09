@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import static io.vertx.core.CompositeFuture.join;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toList;
 import static org.gaussian.vgraph.json.JsonCodec.from;
 
@@ -56,12 +58,19 @@ public class HttpRequestProcessor implements Handler<Message<Object>> {
                                                                                 .collect(toList());
 
             join(asyncResults)
-                    .onFailure(error -> message.fail(1, error.getMessage()))
-                    .onSuccess(results -> message.reply(mergeResults(results)));
+                    .onFailure(error -> message.reply(fallback(error, namespace)))
+                    .onSuccess(results -> message.reply(merge(results)));
         });
     }
 
-    private String mergeResults(CompositeFuture composite) {
+    private Object fallback(Throwable throwable, String namespace) {
+        GraphQLError error = new IndicatorFetcherGraphQLError(throwable.getMessage(), asList(namespace));
+        return new JsonObject().put("indicators", emptyMap())
+                               .put("errors", asList(error))
+                               .encode();
+    }
+
+    private String merge(CompositeFuture composite) {
         final JsonObject mergedResults = new JsonObject();
         final Map<String, Object> indicators = new HashMap<>();
         final List<GraphQLError> errors = new ArrayList<>();

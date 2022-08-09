@@ -58,11 +58,11 @@ public class NamespaceFetcher implements graphql.schema.DataFetcher<CompletionSt
     private Future<DataFetcherResult> fetchData(NamespaceRequest request, Promise promise) {
         final RequestMessage message = new RequestMessage(namespace, request);
         return eventBus.request(HttpRequestProcessor.HTTP_REQUESTS_ADDRESS, encode(message))
-                       .onFailure(promise::fail)
                        .map(Message::body)
                        .map(String::valueOf)
                        .map(JsonObject::new)
                        .map(this::buildDataFetcherResult)
+                       .onFailure(promise::fail)
                        .onSuccess(promise::complete);
     }
 
@@ -73,8 +73,7 @@ public class NamespaceFetcher implements graphql.schema.DataFetcher<CompletionSt
                                                 .map(error -> {
                                                     final String message = error.getString("message");
                                                     final List<Object> path = error.getJsonArray("path").getList();
-                                                    final Map<String, Object> extensions = error.getJsonObject("extensions").getMap();
-                                                    final IndicatorFetcherGraphQLError indicatorFetcherGraphQLError = new IndicatorFetcherGraphQLError(message, path, extensions);
+                                                    final IndicatorFetcherGraphQLError indicatorFetcherGraphQLError = new IndicatorFetcherGraphQLError(message, path);
                                                     return indicatorFetcherGraphQLError;
                                                 }).collect(toList());
 
