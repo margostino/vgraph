@@ -37,14 +37,14 @@ public class GraphQLModule extends AbstractModule {
     @Provides
     @Singleton
     private Future<GraphQLHandler> getGraphQLHandler(Vertx vertx, Future<GraphQL> graphQL) {
-        return buildGraphQLHandler(vertx, graphQL);
+        return buildGraphQLHandler(graphQL).onFailure(error -> failAndClose(vertx, error));
     }
 
     @Inject
     @Provides
     @Singleton
     private Future<GraphQL> getGraphQLApi(Vertx vertx, Future<GraphQLSchema> graphQLSchemaAsync) {
-        return buildGraphQLApi(vertx, graphQLSchemaAsync);
+        return buildGraphQLApi(graphQLSchemaAsync).onFailure(error -> failAndClose(vertx, error));
     }
 
     @Inject

@@ -8,8 +8,10 @@ import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.graphql.GraphiQLHandler;
 import org.gaussian.vgraph.bootstrap.Mountable;
 import org.gaussian.vgraph.datafetcher.NamespaceFetcher;
+import org.gaussian.vgraph.domain.UpdateSchemaErrorResponse;
 import org.gaussian.vgraph.domain.UpdateSchemaRequest;
 import org.gaussian.vgraph.handler.GraphQLHotHandler;
+import org.gaussian.vgraph.json.JsonCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,9 +62,16 @@ public class GraphQLRouter implements Mountable {
         namespaces.onSuccess(fetchers -> {
             NamespaceFetcher namespaceFetcher = (NamespaceFetcher) fetchers.get(request.namespace());
             namespaceFetcher.updateSchema(request.variable(), request.type());
-            graphQLHandler.updateSchema(context.vertx(), request);
-            context.response().setStatusCode(200).end();
+            graphQLHandler.updateSchema(context.vertx(), request)
+                    .onSuccess(handler -> context.response().setStatusCode(200).end())
+                    .onFailure(error -> context.response().setStatusCode(400).end(badRequestResponse(error)));
+
         });
+    }
+
+    private String badRequestResponse(Throwable throwable) {
+        UpdateSchemaErrorResponse response = new UpdateSchemaErrorResponse(throwable.getMessage());
+        return JsonCodec.encode(response);
     }
 
 }

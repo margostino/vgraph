@@ -41,9 +41,8 @@ public class GraphQLBuilders {
         return GraphQLHandler.create(graphQLApi, graphQLHandlerOptions);
     }
 
-    public static Future<GraphQLHandler> buildGraphQLHandler(Vertx vertx, Future<GraphQL> graphQL) {
-        return graphQL.onFailure(error -> failAndClose(vertx, error))
-                .map(GraphQLBuilders::buildGraphQLHandler);
+    public static Future<GraphQLHandler> buildGraphQLHandler(Future<GraphQL> graphQL) {
+        return graphQL.map(GraphQLBuilders::buildGraphQLHandler);
     }
 
     public static TypeDefinitionRegistry buildSchemaRegistry(String schemaAsString) {
@@ -83,10 +82,8 @@ public class GraphQLBuilders {
                 .build();
     }
 
-    public static Future<GraphQL> buildGraphQLApi(Vertx vertx, Future<GraphQLSchema> graphQLSchemaAsync) {
-        return graphQLSchemaAsync
-                .onFailure(error -> failAndClose(vertx, error))
-                .map(GraphQLBuilders::buildGraphQLApi);
+    public static Future<GraphQL> buildGraphQLApi(Future<GraphQLSchema> graphQLSchemaAsync) {
+        return graphQLSchemaAsync.map(GraphQLBuilders::buildGraphQLApi);
     }
 
     public static Optional<GraphQLSchema> buildGraphQLSchema(CompositeFuture composite) {
