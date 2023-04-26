@@ -51,7 +51,7 @@ public class GraphQLModule extends AbstractModule {
     @Provides
     @Singleton
     private Future<GraphQLSchema> getGraphQLSchema(Vertx vertx, Future<TypeDefinitionRegistry> typeDefRegistryAsync, Future<RuntimeWiring> runtimeWiringAsync) {
-        return buildGraphQLSchema(vertx, typeDefRegistryAsync, runtimeWiringAsync);
+        return buildGraphQLSchema(typeDefRegistryAsync, runtimeWiringAsync).onFailure(error -> failAndClose(vertx, error));
     }
 
     @Inject

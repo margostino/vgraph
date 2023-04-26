@@ -1,1 +1,473 @@
-{"_type":"export","__export_format":4,"__export_date":"2022-08-02T20:13:25.754Z","__export_source":"insomnia.desktop.app:v2022.4.2","resources":[{"_id":"req_f3fc492c29774f2e808d97d42adeebfb","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659470993821,"created":1659113307055,"url":"http://localhost:10000/indicators","name":"wiremock","description":"","method":"POST","body":{"mimeType":"application/json","text":"{\n\t\"namespace\": \"co2_emission\",\n\t\"arguments\": {\n\t\t\"country\": \"se\"\n\t},\n\t\"indicators\": [\n\t\t\"co2_transport_emission\"\n\t]\n}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_95cb980f10664701a349e54a6168bec8"}],"authentication":{},"metaSortKey":-1659113307055,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"fld_d5ac5e253ffc4f7989683a64fc614535","parentId":"wrk_7df0baae8d844a908227cd2a8ba9cafa","modified":1659110065133,"created":1659110050818,"name":"vgraph","description":"","environment":{},"environmentPropertyOrder":null,"metaSortKey":-1628378477363.75,"_type":"request_group"},{"_id":"wrk_7df0baae8d844a908227cd2a8ba9cafa","parentId":null,"modified":1630668006961,"created":1621250505214,"name":"margostino","description":"","scope":"collection","_type":"workspace"},{"_id":"req_9e8197c87dee4db2a452402148c34a5c","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659470995404,"created":1659110050843,"url":"http://localhost:8080/graphql","name":"bad request provider","description":"","method":"POST","body":{"mimeType":"application/graphql","text":"{\"query\":\"query ($country: String) {\\n\\tair_pollution(country: $country) {\\n\\t\\tcarbon_monoxide\\n\\t\\tnon_methane_volatile_organic_compounds\\n\\t\\tdeath_rate\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"gb\"}}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_9b3b1096311e4c6f98a2d7120568b374"},{"name":"Klarna-Client-Name","value":"sarlangax","description":"","id":"pair_42abfeca342c47d69fbdabfdabb2a10c"},{"id":"pair_46719804748844ea8107524a066b6026","name":"Klarna-Correlation-Id","value":"8c3e7bf7-67f0-4db8-a49c-495dfcd27846","description":""}],"authentication":{"type":"basic","useISO88591":false,"disabled":false,"username":"yggdrasil","password":"yggdrasil"},"metaSortKey":-1657416161709.5,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_328445ec72b9466d8a5e7f8db9bbb4d5","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659470998207,"created":1659110050833,"url":"http://localhost:8080/graphql","name":"partial error","description":"","method":"POST","body":{"mimeType":"application/graphql","text":"{\"query\":\"query ($country: String, $city: String) {\\n\\tco2_emission(country: $country, city: $city) {\\n\\t\\tco2_emission_per_capita\\n\\t\\tco2_waste_emission\\n\\t\\tco2_transport_emission\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"us\",\"city\":\"new york\"}}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_9b3b1096311e4c6f98a2d7120568b374"},{"name":"Klarna-Client-Name","value":"sarlangax","description":"","id":"pair_42abfeca342c47d69fbdabfdabb2a10c"},{"id":"pair_46719804748844ea8107524a066b6026","name":"Klarna-Correlation-Id","value":"8c3e7bf7-67f0-4db8-a49c-495dfcd27846","description":""}],"authentication":{"type":"basic","useISO88591":false,"disabled":false,"username":"yggdrasil","password":"yggdrasil"},"metaSortKey":-1657416161659.5,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_4351836691c8485f94e04bb80ea7e811","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659470997427,"created":1659110050822,"url":"http://localhost:8080/graphql","name":"multiple namespaces","description":"","method":"POST","body":{"mimeType":"application/graphql","text":"{\"query\":\"query ($country: String, $city: String) {\\n\\tair_pollution(country: $country, city: $city) {\\n\\t\\tcarbon_monoxide\\n\\t\\tnon_methane_volatile_organic_compounds\\n\\t\\tdeath_rate\\n\\t}\\n\\tco2_emission(country: $country, city: $city) {\\n\\t\\tco2_emission_per_capita\\n\\t\\tco2_waste_emission\\n\\t\\tco2_transport_emission\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"se\",\"city\":\"stockholm\"}}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_9b3b1096311e4c6f98a2d7120568b374"},{"name":"Klarna-Client-Name","value":"sarlangax","description":"","id":"pair_42abfeca342c47d69fbdabfdabb2a10c"},{"id":"pair_46719804748844ea8107524a066b6026","name":"Klarna-Correlation-Id","value":"8c3e7bf7-67f0-4db8-a49c-495dfcd27846","description":""}],"authentication":{"type":"basic","useISO88591":false,"disabled":false,"username":"yggdrasil","password":"yggdrasil"},"metaSortKey":-1657416161609.5,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_453ca2b7bce641e090268229a2822d09","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659470999564,"created":1659110050837,"url":"http://localhost:8080/graphql","name":"all ok","description":"","method":"POST","body":{"mimeType":"application/graphql","text":"{\"query\":\"query ($country: String, $city: String) {\\n\\tair_pollution(country: $country, city: $city) {\\n\\t\\tdeath_rate\\n\\t}\\n\\tco2_emission(country: $country, city: $city) {\\n\\t\\tco2_transport_emission\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"se\",\"city\":\"stockholm\"}}"},"parameters":[],"headers":[{"name":"Content-Type","value":"application/json","id":"pair_9b3b1096311e4c6f98a2d7120568b374"},{"name":"Klarna-Client-Name","value":"sarlangax","description":"","id":"pair_42abfeca342c47d69fbdabfdabb2a10c"},{"id":"pair_46719804748844ea8107524a066b6026","name":"Klarna-Correlation-Id","value":"8c3e7bf7-67f0-4db8-a49c-495dfcd27846","description":""}],"authentication":{"type":"basic","useISO88591":false,"disabled":false,"username":"yggdrasil","password":"yggdrasil"},"metaSortKey":-1656583401899.25,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_96b9bd30ccbe421eb2cde4df3e514fdf","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659110050868,"created":1659110050868,"url":"http://localhost:8080/ping","name":"ping","description":"","method":"GET","body":{},"parameters":[],"headers":[{"name":"Klarna-Client-Name","value":"sarlangax","description":"","id":"pair_42abfeca342c47d69fbdabfdabb2a10c"},{"id":"pair_46719804748844ea8107524a066b6026","name":"Klarna-Correlation-Id","value":"8c3e7bf7-67f0-4db8-a49c-495dfcd27846","description":""}],"authentication":{"type":"basic","useISO88591":false,"disabled":false,"username":"yggdrasil","password":"yggdrasil"},"metaSortKey":-1656375211971.6875,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"req_1a4da846a1524a939c8188c21603ec47","parentId":"fld_d5ac5e253ffc4f7989683a64fc614535","modified":1659110050873,"created":1659110050873,"url":"http://localhost:8081/metrics","name":"metrics","description":"","method":"GET","body":{},"parameters":[],"headers":[{"name":"Klarna-Client-Name","value":"sarlangax","description":"","id":"pair_42abfeca342c47d69fbdabfdabb2a10c"},{"id":"pair_46719804748844ea8107524a066b6026","name":"Klarna-Correlation-Id","value":"8c3e7bf7-67f0-4db8-a49c-495dfcd27846","description":""}],"authentication":{"type":"basic","useISO88591":false,"disabled":false,"username":"yggdrasil","password":"yggdrasil"},"metaSortKey":-1656271117007.9062,"isPrivate":false,"settingStoreCookies":true,"settingSendCookies":true,"settingDisableRenderRequestBody":false,"settingEncodeUrl":true,"settingRebuildPath":true,"settingFollowRedirects":"global","_type":"request"},{"_id":"env_f23d5de80f53e5cfcd17bf3ac664f642ccdc62d3","parentId":"wrk_7df0baae8d844a908227cd2a8ba9cafa","modified":1621250505282,"created":1621250505282,"name":"Base Environment","data":{},"dataPropertyOrder":null,"color":null,"isPrivate":false,"metaSortKey":1621250505282,"_type":"environment"},{"_id":"jar_f23d5de80f53e5cfcd17bf3ac664f642ccdc62d3","parentId":"wrk_7df0baae8d844a908227cd2a8ba9cafa","modified":1655389756128,"created":1621250505284,"name":"Default Jar","cookies":[{"key":"JSESSIONID","value":"7724C3A164D6BBC11C604A74B2FF37D9","domain":"persona-gateway-eu.production.c2c.klarna.net","path":"/","httpOnly":true,"hostOnly":true,"creation":"2021-06-30T11:43:21.945Z","lastAccessed":"2021-06-30T13:14:15.748Z","id":"8736970659931209"},{"key":"api_https.cookieCORS","value":"76a6c6567ab12cea5dac4942d8df71cc","domain":"api.worldbank.org","path":"/","secure":true,"extensions":["SameSite=None"],"hostOnly":true,"creation":"2021-07-22T16:05:42.719Z","lastAccessed":"2021-07-22T16:05:42.719Z","id":"7470405237740592"},{"key":"api_https.cookie","value":"76a6c6567ab12cea5dac4942d8df71cc","domain":"api.worldbank.org","path":"/","hostOnly":true,"creation":"2021-07-22T16:05:42.719Z","lastAccessed":"2021-07-22T16:05:42.719Z","id":"5339516290217567"},{"key":"dataapi.cookie","value":"853586186.20480.0000","domain":"api.worldbank.org","path":"/","httpOnly":true,"hostOnly":true,"creation":"2021-07-22T16:05:42.719Z","lastAccessed":"2021-08-18T14:10:14.730Z","id":"057684686637845095"},{"key":"BIGipServerdataapi.sfarm","value":"1604433930.20480.0000","domain":"api.worldbank.org","path":"/","httpOnly":true,"hostOnly":true,"creation":"2021-07-22T16:05:42.719Z","lastAccessed":"2021-08-18T14:10:14.731Z","id":"7218638950602161"},{"key":"TS01fa65e4","value":"01359ee97641b6c966c5a7e8998850d475a96ef7fe75cbf0c8a49efdb5eb271295159bbdde896f0fa259a6d57acca3d91ed70a9135bf5de25a71caf4c1ca4bcf5c81bc16dae457d58ce2498d370f42e3bc1bacb539","domain":"api.worldbank.org","path":"/","hostOnly":true,"creation":"2021-07-22T16:05:42.719Z","lastAccessed":"2021-08-18T14:10:14.731Z","id":"9622483553208498"},{"key":"TS019865bf","value":"01689d3836f4435a8c0b8dfd9a6a9d78356864765312cb0ff8706a96296517df4a74146116a8190969e8ec430374463631871af1727698e08a3b975009bb1e744dafc051bced7ce64b30fbc0f3e785733eff8ad06d0b3081a72877dc09ca9d82a6fe81a3a9","domain":"api.worldbank.org","path":"/","hostOnly":true,"creation":"2021-07-22T16:05:42.720Z","lastAccessed":"2021-08-18T14:10:14.731Z","id":"2167243333003872"},{"key":"JSESSIONID","value":"ajax:7281150492565894888","domain":"www.linkedin.com","path":"/","secure":true,"extensions":["SameSite=None"],"hostOnly":false,"creation":"2022-06-16T14:29:16.121Z","lastAccessed":"2022-06-16T14:29:16.121Z","id":"033558224200443965"},{"key":"lang","value":"v=2&lang=en-us","domain":"linkedin.com","path":"/","secure":true,"extensions":["SameSite=None"],"hostOnly":false,"creation":"2022-06-16T14:29:16.122Z","lastAccessed":"2022-06-16T14:29:16.122Z","id":"7275882389792343"},{"key":"bcookie","value":"\"v=2&cc988995-bc79-4152-88b6-535d054aa797\"","expires":"2024-06-16T02:06:47.000Z","domain":"linkedin.com","path":"/","secure":true,"extensions":["SameSite=None"],"hostOnly":false,"creation":"2022-06-16T14:29:16.123Z","lastAccessed":"2022-06-16T14:29:16.123Z","id":"16946954732428954"},{"key":"bscookie","value":"\"v=1&20220616142914465e92f5-ad63-43f6-810e-6247e5ad78dcAQEn7BnN1XE_IrBsTD1RiDiRmug5M4WE\"","expires":"2024-06-16T02:06:47.000Z","domain":"www.linkedin.com","path":"/","secure":true,"httpOnly":true,"extensions":["SameSite=None"],"hostOnly":false,"creation":"2022-06-16T14:29:16.124Z","lastAccessed":"2022-06-16T14:29:16.124Z","id":"5186525685262533"},{"key":"li_gc","value":"MTswOzE2NTUzODk3NTQ7MjswMjGbFUgdjxU0uqIk4hLw6YhdH0MGYC87Snc+I5CN/IMXhw==","expires":"2024-06-12T18:31:26.000Z","domain":"linkedin.com","path":"/","secure":true,"extensions":["SameSite=None"],"hostOnly":false,"creation":"2022-06-16T14:29:16.125Z","lastAccessed":"2022-06-16T14:29:16.125Z","id":"24957174820799666"},{"key":"lidc","value":"\"b=TGST04:s=T:r=T:a=T:p=T:g=2738:u=1:x=1:i=1655389755:t=1655476155:v=2:sig=AQEQlvFhQjFMeZ-q90EGwkOyBOfOTc_a\"","expires":"2022-06-17T14:29:15.000Z","domain":"linkedin.com","path":"/","secure":true,"extensions":["SameSite=None"],"hostOnly":false,"creation":"2022-06-16T14:29:16.125Z","lastAccessed":"2022-06-16T14:29:16.125Z","id":"41376552860550353"}],"_type":"cookie_jar"},{"_id":"spc_a2b0fdcccb7d4f41ad19b3eead94db06","parentId":"wrk_7df0baae8d844a908227cd2a8ba9cafa","modified":1621250505219,"created":1621250505219,"fileName":"mpcs","contents":"","contentType":"yaml","_type":"api_spec"},{"_id":"env_feeeb2fcd7484400ac821d14f3e76530","parentId":"env_f23d5de80f53e5cfcd17bf3ac664f642ccdc62d3","modified":1621954429938,"created":1621250862065,"name":"EU Staging","data":{"access_token":"{% response 'body', 'req_fa0ec5fb61544d26bf8cb95842c1014e', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}"},"dataPropertyOrder":{"&":["access_token"]},"color":null,"isPrivate":false,"metaSortKey":1621250862065,"_type":"environment"},{"_id":"env_237beb79c87847dca7a3866dec742dfd","parentId":"env_f23d5de80f53e5cfcd17bf3ac664f642ccdc62d3","modified":1624875809682,"created":1621954436364,"name":"EU Playground","data":{"access_token":"{% response 'body', 'req_5376ccebead7436bb79fe7d5156c0eac', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}"},"dataPropertyOrder":{"&":["access_token"]},"color":null,"isPrivate":false,"metaSortKey":1621954436364,"_type":"environment"},{"_id":"env_cb9a4873c83b4146982af49b9e200823","parentId":"env_f23d5de80f53e5cfcd17bf3ac664f642ccdc62d3","modified":1655478274052,"created":1625639658842,"name":"local","data":{"access_token":"{% response 'body', 'req_f052e814bf0d4be8a9fb8e434bd8dc50', 'b64::JC5hY2Nlc3NfdG9rZW4=::46b', 'never', 60 %}","gsl_port":8500,"gsl_admin_port":9500},"dataPropertyOrder":{"&":["access_token","gsl_port","gsl_admin_port"]},"color":null,"isPrivate":false,"metaSortKey":1625639658842,"_type":"environment"}]}
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2023-04-26T15:46:27.928Z",
+  "__export_source": "insomnia.desktop.app:v2023.1.0",
+  "resources": [
+    {
+      "_id": "req_f3fc492c29774f2e808d97d42adeebfb",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1660591766571,
+      "created": 1659113307055,
+      "url": "http://localhost:10000/indicators",
+      "name": "wiremock",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"namespace\": \"co2_emission\",\n\t\"arguments\": {\n\t\t\"country\": \"se\"\n\t},\n\t\"indicators\": [\n\t\t\"co2_transport_emission\"\n\t]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_95cb980f10664701a349e54a6168bec8"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1659113307055,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "parentId": "wrk_7df0baae8d844a908227cd2a8ba9cafa",
+      "modified": 1659110065133,
+      "created": 1659110050818,
+      "name": "vgraph",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1628378477363.75,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_7df0baae8d844a908227cd2a8ba9cafa",
+      "parentId": null,
+      "modified": 1630668006961,
+      "created": 1621250505214,
+      "name": "margostino",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_c4437c17f29f4ede8ae69997ea330dff",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1682515056300,
+      "created": 1682005712369,
+      "url": "http://localhost:8080/schema",
+      "name": "update schema",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"namespace\": \"air_pollution\",\n\t\"variable_name\": \"new_variable\",\n\t\"description\": \"New tbd\",\n\t\"type\": \"Long\",\n\t\"directives\": [\n\t\t{\n\t\t\t\"name\": \"countries\",\n\t\t\t\"arguments\": [\n\t\t\t\t{\n\t\t\t\t\t\"name\": \"codes\",\n\t\t\t\t\t\"values\": [\n\t\t\t\t\t\t\"GB\"\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_95cb980f10664701a349e54a6168bec8"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1658417788167,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_135745fd18de4bd0bef24bab0cb33c69",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1682515065036,
+      "created": 1682515049724,
+      "url": "http://localhost:8080/schema",
+      "name": "update schema (wrong)",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"namespace\": \"air_pollution\",\n\t\"variable_name\": \"new_variable2\",\n\t\"description\": \"New tbd\",\n\t\"type\": \"Long\",\n\t\"directives\": [\n\t\t{\n\t\t\t\"name\": \"country\",\n\t\t\t\"arguments\": [\n\t\t\t\t{\n\t\t\t\t\t\"name\": \"codes\",\n\t\t\t\t\t\"values\": [\n\t\t\t\t\t\t\"GB\"\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t}\n\t]\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_95cb980f10664701a349e54a6168bec8"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1658070028723,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_9e8197c87dee4db2a452402148c34a5c",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1659470995404,
+      "created": 1659110050843,
+      "url": "http://localhost:8080/graphql",
+      "name": "bad request provider",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/graphql",
+        "text": "{\"query\":\"query ($country: String) {\\n\\tair_pollution(country: $country) {\\n\\t\\tcarbon_monoxide\\n\\t\\tnon_methane_volatile_organic_compounds\\n\\t\\tdeath_rate\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"gb\"}}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_9b3b1096311e4c6f98a2d7120568b374"
+        },
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1657416161709.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_328445ec72b9466d8a5e7f8db9bbb4d5",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1659470998207,
+      "created": 1659110050833,
+      "url": "http://localhost:8080/graphql",
+      "name": "partial error",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/graphql",
+        "text": "{\"query\":\"query ($country: String, $city: String) {\\n\\tco2_emission(country: $country, city: $city) {\\n\\t\\tco2_emission_per_capita\\n\\t\\tco2_waste_emission\\n\\t\\tco2_transport_emission\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"us\",\"city\":\"new york\"}}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_9b3b1096311e4c6f98a2d7120568b374"
+        },
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1657416161659.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_4351836691c8485f94e04bb80ea7e811",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1659470997427,
+      "created": 1659110050822,
+      "url": "http://localhost:8080/graphql",
+      "name": "multiple namespaces",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/graphql",
+        "text": "{\"query\":\"query ($country: String, $city: String) {\\n\\tair_pollution(country: $country, city: $city) {\\n\\t\\tcarbon_monoxide\\n\\t\\tnon_methane_volatile_organic_compounds\\n\\t\\tdeath_rate\\n\\t}\\n\\tco2_emission(country: $country, city: $city) {\\n\\t\\tco2_emission_per_capita\\n\\t\\tco2_waste_emission\\n\\t\\tco2_transport_emission\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"se\",\"city\":\"stockholm\"}}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_9b3b1096311e4c6f98a2d7120568b374"
+        },
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1657416161609.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_855c63e16a1d4fba839bded28b8a85f6",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1682506340654,
+      "created": 1682003886505,
+      "url": "http://localhost:8080/graphql",
+      "name": "schema",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/graphql",
+        "text": "{\"query\":\"{\\n\\t__schema {\\n\\t\\tqueryType {\\n\\t\\t\\tname\\n\\t\\t}\\n\\t\\ttypes {\\n\\t\\t\\tname\\n\\t\\t}\\n\\t}\\n\\t__type(name: \\\"AirPollution\\\") {\\n\\t\\tname\\n\\t\\tkind\\n\\t\\tfields {\\n\\t\\t\\tname\\n\\t\\t\\ttype {\\n\\t\\t\\t\\tname\\n\\t\\t\\t\\tkind\\n\\t\\t\\t}\\n\\t\\t}\\n\\t}\\n}\\n\",\"variables\":{}}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_9b3b1096311e4c6f98a2d7120568b374"
+        },
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1657207971681.9375,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_453ca2b7bce641e090268229a2822d09",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1682518354471,
+      "created": 1659110050837,
+      "url": "http://localhost:8080/graphql",
+      "name": "all ok",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/graphql",
+        "text": "{\"query\":\"query ($country: String, $city: String) {\\n\\tair_pollution(country: $country, city: $city) {\\n\\t\\tdeath_rate\\n\\t\\tnew_variable\\n\\t}\\n\\tco2_emission(country: $country, city: $city) {\\n\\t\\tco2_transport_emission\\n\\t}\\n}\\n\",\"variables\":{\"country\":\"se\",\"city\":\"stockholm\"}}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_9b3b1096311e4c6f98a2d7120568b374"
+        },
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1656583401899.25,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_96b9bd30ccbe421eb2cde4df3e514fdf",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1659110050868,
+      "created": 1659110050868,
+      "url": "http://localhost:8080/ping",
+      "name": "ping",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1656375211971.6875,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_1a4da846a1524a939c8188c21603ec47",
+      "parentId": "fld_d5ac5e253ffc4f7989683a64fc614535",
+      "modified": 1659110050873,
+      "created": 1659110050873,
+      "url": "http://localhost:8081/metrics",
+      "name": "metrics",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Klarna-Client-Name",
+          "value": "sarlangax",
+          "description": "",
+          "id": "pair_42abfeca342c47d69fbdabfdabb2a10c"
+        },
+        {
+          "id": "pair_46719804748844ea8107524a066b6026",
+          "name": "Klarna-Correlation-Id",
+          "value": "8c3e7bf7-67f0-4db8-a49c-495dfcd27846",
+          "description": ""
+        }
+      ],
+      "authentication": {
+        "type": "basic",
+        "useISO88591": false,
+        "disabled": false,
+        "username": "yggdrasil",
+        "password": "yggdrasil"
+      },
+      "metaSortKey": -1656271117007.9062,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_f23d5de80f53e5cfcd17bf3ac664f642ccdc62d3",
+      "parentId": "wrk_7df0baae8d844a908227cd2a8ba9cafa",
+      "modified": 1621250505282,
+      "created": 1621250505282,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1621250505282,
+      "_type": "environment"
+    }
+  ]
+}

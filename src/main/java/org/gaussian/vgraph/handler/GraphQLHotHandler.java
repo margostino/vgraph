@@ -7,6 +7,7 @@ import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.handler.graphql.GraphQLHandler;
 import org.gaussian.vgraph.configuration.guice.GraphQLBuilders;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static io.vertx.core.Future.succeededFuture;
 import static org.gaussian.vgraph.configuration.guice.GraphQLBuilders.*;
 
 public class GraphQLHotHandler {
@@ -40,7 +42,8 @@ public class GraphQLHotHandler {
         return this.graphQLHandlerAsync;
     }
 
-    public Future<GraphQLHandler> updateSchema(Vertx vertx, UpdateSchemaRequest request) {
+    public Future<Boolean> updateSchema(UpdateSchemaRequest request) {
+        Promise<Boolean> updateSuccessPromise = Promise.promise();
         Future<TypeDefinitionRegistry> updatedTypeDefRegistryAsync = graphQLSchemaAsync.map(graphQLSchema -> {
             GraphQLObjectType query = graphQLSchema.getQueryType();
             List<GraphQLFieldDefinition> fieldDefinitions = query.getFieldDefinitions();
@@ -49,14 +52,20 @@ public class GraphQLHotHandler {
             return buildSchemaRegistry(graphQLSchemaAsString);
         });
 
-        this.graphQLSchemaAsync = buildGraphQLSchema(vertx, updatedTypeDefRegistryAsync, runtimeWiringAsync);
-        this.graphQLHandlerAsync = reloadHandler();
-        return this.graphQLHandlerAsync;
+        buildGraphQLSchema(updatedTypeDefRegistryAsync, runtimeWiringAsync)
+                .onSuccess(updatedGraphQLSchema -> {
+                    this.graphQLSchemaAsync = succeededFuture(updatedGraphQLSchema);
+                    reloadHandlerWith();
+                    updateSuccessPromise.complete(true);
+                })
+                .onFailure(updateSuccessPromise::fail);
+
+        return updateSuccessPromise.future();
     }
 
-    private Future<GraphQLHandler> reloadHandler() {
-        return buildGraphQLApi(graphQLSchemaAsync)
-                .map(graphQL -> buildGraphQLHandler(graphQL))
+    private void reloadHandlerWith() {
+        buildGraphQLApi(graphQLSchemaAsync)
+                .onSuccess(graphQL -> this.graphQLHandlerAsync = buildGraphQLHandler(succeededFuture(graphQL)))
                 .onFailure(error -> log.error("Unable to update GraphQL Handler: {}", error.getMessage()));
     }
 }

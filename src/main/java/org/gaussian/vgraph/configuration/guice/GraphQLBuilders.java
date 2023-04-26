@@ -99,9 +99,8 @@ public class GraphQLBuilders {
         return empty();
     }
 
-    public static Future<GraphQLSchema> buildGraphQLSchema(Vertx vertx, Future<TypeDefinitionRegistry> typeDefRegistryAsync, Future<RuntimeWiring> runtimeWiringAsync) {
+    public static Future<GraphQLSchema> buildGraphQLSchema(Future<TypeDefinitionRegistry> typeDefRegistryAsync, Future<RuntimeWiring> runtimeWiringAsync) {
         return join(typeDefRegistryAsync, runtimeWiringAsync)
-                .onFailure(error -> failAndClose(vertx, error))
                 .map(graphQLConfig -> buildGraphQLSchema(graphQLConfig).orElseThrow(() -> new RuntimeException("cannot build GraphQL Schema")));
     }
 

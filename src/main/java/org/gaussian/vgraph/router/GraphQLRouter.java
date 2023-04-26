@@ -62,9 +62,12 @@ public class GraphQLRouter implements Mountable {
         namespaces.onSuccess(fetchers -> {
             NamespaceFetcher namespaceFetcher = (NamespaceFetcher) fetchers.get(request.namespace());
             namespaceFetcher.updateSchema(request.variable(), request.type());
-            graphQLHandler.updateSchema(context.vertx(), request)
+            graphQLHandler.updateSchema(request)
                     .onSuccess(handler -> context.response().setStatusCode(200).end())
-                    .onFailure(error -> context.response().setStatusCode(400).end(badRequestResponse(error)));
+                    .onFailure(error -> {
+                        log.error("Unable to update GraphQL Handler: {}", error.getMessage());
+                        context.response().setStatusCode(400).end(badRequestResponse(error));
+                    });
 
         });
     }
