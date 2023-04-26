@@ -210,7 +210,6 @@ public class VertxApp {
                                                                                .setEmbeddedServerEndpoint("/metrics");
         MicrometerMetricsOptions metricsOptions = new MicrometerMetricsOptions().setPrometheusOptions(prometheusOptions)
                                                                                 .setEnabled(true);
-
         final VertxOptions options = new VertxOptions().setMetricsOptions(metricsOptions);
         return Vertx.vertx(options);
     }

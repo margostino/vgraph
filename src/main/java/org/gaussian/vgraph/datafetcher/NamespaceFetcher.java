@@ -58,38 +58,38 @@ public class NamespaceFetcher implements graphql.schema.DataFetcher<CompletionSt
     private Future<DataFetcherResult> fetchData(NamespaceRequest request, Promise promise) {
         final RequestMessage message = new RequestMessage(namespace, request);
         return eventBus.request(HttpRequestProcessor.HTTP_REQUESTS_ADDRESS, encode(message))
-                       .map(Message::body)
-                       .map(String::valueOf)
-                       .map(JsonObject::new)
-                       .map(this::buildDataFetcherResult)
-                       .onFailure(promise::fail)
-                       .onSuccess(promise::complete);
+                .map(Message::body)
+                .map(String::valueOf)
+                .map(JsonObject::new)
+                .map(this::buildDataFetcherResult)
+                .onFailure(promise::fail)
+                .onSuccess(promise::complete);
     }
 
     private DataFetcherResult buildDataFetcherResult(JsonObject result) {
         final Map<String, Object> indicators = result.getJsonObject("indicators").getMap();
         final List<GraphQLError> errors = result.getJsonArray("errors").stream()
-                                                .map(JsonObject.class::cast)
-                                                .map(error -> {
-                                                    final String message = error.getString("message");
-                                                    final List<Object> path = error.getJsonArray("path").getList();
-                                                    final IndicatorFetcherGraphQLError indicatorFetcherGraphQLError = new IndicatorFetcherGraphQLError(message, path);
-                                                    return indicatorFetcherGraphQLError;
-                                                }).collect(toList());
+                .map(JsonObject.class::cast)
+                .map(error -> {
+                    final String message = error.getString("message");
+                    final List<Object> path = error.getJsonArray("path").getList();
+                    final IndicatorFetcherGraphQLError indicatorFetcherGraphQLError = new IndicatorFetcherGraphQLError(message, path);
+                    return indicatorFetcherGraphQLError;
+                }).collect(toList());
 
         return DataFetcherResult.newResult().data(indicators).errors(errors).build();
     }
 
     private NamespaceRequest buildRequest(DataFetchingEnvironment environment, String correlationId, String username) {
         return NamespaceRequest.builder()
-                               .parameters(environment.getArguments())
-                               .indicators(getRequestedIndicators(environment))
-                               .metadata(NamespaceRequest.NamespaceRequestMetadata.builder()
-                                                                                  .correlationId(correlationId)
-                                                                                  .username(username)
-                                                                                  .build()
-                               )
-                               .build();
+                .parameters(environment.getArguments())
+                .indicators(getRequestedIndicators(environment))
+                .metadata(NamespaceRequest.NamespaceRequestMetadata.builder()
+                        .correlationId(correlationId)
+                        .username(username)
+                        .build()
+                )
+                .build();
     }
 
     private Optional<String> getHeaderValue(DataFetchingEnvironment environment, String headerName) {
@@ -101,12 +101,16 @@ public class NamespaceFetcher implements graphql.schema.DataFetcher<CompletionSt
 
     private List<RequestedIndicatorDTO> getRequestedIndicators(DataFetchingEnvironment environment) {
         return environment.getFields().stream()
-                          .flatMap(field -> field.getSelectionSet().getSelections().stream())
-                          .map(selection -> ((Field) selection).getName())
-                          .distinct()
-                          .filter(schema::containsKey)
-                          .map(indicatorName -> new RequestedIndicatorDTO(indicatorName, schema.get(indicatorName)))
-                          .collect(toList());
+                .flatMap(field -> field.getSelectionSet().getSelections().stream())
+                .map(selection -> ((Field) selection).getName())
+                .distinct()
+                .filter(schema::containsKey)
+                .map(indicatorName -> new RequestedIndicatorDTO(indicatorName, schema.get(indicatorName)))
+                .collect(toList());
     }
 
+    public void updateSchema(String fieldName, String type) {
+        // TODO: validate
+        schema.put(fieldName, type);
+    }
 }

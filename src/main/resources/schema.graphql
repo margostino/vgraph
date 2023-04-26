@@ -3,31 +3,31 @@ directive @countries(
 ) on FIELD_DEFINITION
 
 "Global share of primary energy consumption by source"
-type EnergyConsumptionIndicators {
+type EnergyConsumption {
     """
-    Solar %
+    Solar contribution (percentage)
     """
     solar: Long
     """
-    Wind %
+    Wind contribution (percentage)
     """
     wind: Long
     """
-    Nuclear %
+    Nuclear contribution (percentage)
     """
     nuclear: Long
     """
-    Hydropower %
+    Hydropower contribution (percentage)
     """
     hydropower: Long
     """
-    Natural gas %
+    Natural gas contribution (percentage)
     """
     natural_gas: Long
 }
 
 "Air pollutant emissions reported for countries, where data is available, measured in tonnes per year"
-type AirPollutionIndicators {
+type AirPollution {
     """
     Carbon monoxide
     Countries: [GB]
@@ -46,7 +46,7 @@ type AirPollutionIndicators {
 }
 
 "Consolidated namespace for all indicators of CO2 Emission by country"
-type Co2EmissionIndicators {
+type Co2Emission {
     """
     CO2 Emission per capita
     Key(s): city
@@ -69,11 +69,11 @@ type Co2EmissionIndicators {
 
 type Query {
     "Air pollutant emissions reported for countries, where data is available, measured in tonnes per year"
-    air_pollution(country: String, city: String): AirPollutionIndicators
+    air_pollution(country: String, city: String): AirPollution
     "Consolidated namespace for all indicators of CO2 Emission by country"
-    co2_emission(country: String, city: String): Co2EmissionIndicators
+    co2_emission(country: String, city: String): Co2Emission
     "Global share of primary energy consumption by source"
-    energy_consumption(country: String): EnergyConsumptionIndicators
+    energy_consumption(country: String): EnergyConsumption
 }
 
 schema {
