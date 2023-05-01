@@ -8,7 +8,6 @@ import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.TypeDefinitionRegistry;
 import io.vertx.core.Future;
 import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
 import io.vertx.ext.web.handler.graphql.GraphQLHandler;
 import org.gaussian.vgraph.configuration.guice.GraphQLBuilders;
 import org.gaussian.vgraph.domain.DynamicGraphQLSchema;

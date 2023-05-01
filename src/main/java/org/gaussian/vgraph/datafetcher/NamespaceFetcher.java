@@ -39,11 +39,11 @@ public class NamespaceFetcher implements graphql.schema.DataFetcher<CompletionSt
     private final Map<String, String> schema;
     public final List<DataFetcher> indicatorFetchers;
 
-    public NamespaceFetcher(EventBus eventBus, String namespace, List<DataFetcher> indicatorFetchers, Map<String, String> schema) {
+    public NamespaceFetcher(EventBus eventBus, String namespace, List<DataFetcher> dataFetchers, Map<String, String> schema) {
         this.schema = schema;
         this.eventBus = eventBus;
         this.namespace = require(namespace, notEmptyString());
-        this.indicatorFetchers = require(indicatorFetchers, hasSize(greaterThan(0)));
+        this.indicatorFetchers = require(dataFetchers, hasSize(greaterThan(0)));
     }
 
     @Override
